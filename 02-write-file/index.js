@@ -1,11 +1,11 @@
-const process = require('process');
+const { stdin, stdout, exit } = process;
 const fs = require('fs');
 const path = require('path');
 
 let output = path.join(__dirname, 'text.txt');
 let stream = fs.createWriteStream(output, 'utf-8');
 
-console.log('Введите текст');
+stdout.write('Введите текст' + '\n');
 
 const textFile = stream.on('readable', function() {
     const data = stream.read();
@@ -21,16 +21,16 @@ const textFile = stream.on('readable', function() {
 
 process.stdin.on('data', function(data) {
     if(data.toString().trim() === 'Exit') {
-        console.log('Good bye');
-        process.exit(); 
+        stdout.write('Пока');
+        exit(); 
     }
 })
 
 process.on('SIGINT', function(code) {
     if(code === 'SIGINT') {
-        console.log('Good bye!');
-        process.exit();
+        stdout.write('Пока!');
+        exit();
     }
 })
 
-process.stdin.pipe(textFile);
+stdin.pipe(textFile);
